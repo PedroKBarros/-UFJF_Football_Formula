@@ -43,7 +43,7 @@ def handlesSelectedMainMenuOption(option):
 def showErrorMessage(msgCode):
     errMsg = '__________________ ERROR __________________\n'
     if (msgCode == 1):
-        errMsg += 'Invalid option.'
+        errMsg += 'Invalid option.\n'
 
     errMsg += '___________________________________________________\n'
     print(errMsg)
