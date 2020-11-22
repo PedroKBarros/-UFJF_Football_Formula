@@ -90,8 +90,6 @@ def showErrorMessage(msgCode):
         errMsg += 'Invalid option.\n'
     if (msgCode == 2):
         errMsg += 'The factor name is required.\n'
-    if (msgCode == 3):
-        errMsg += 'The factor type is required.\n'
     if (msgCode == 4):
         errMsg += 'The factor name has exceeded 45 characters.\n'
 
