@@ -45,10 +45,14 @@ def getsAttributeNameNewTupleTableFator():
     if (name == ''):
         showErrorMessage(2)
         return None
+    if (len(name) > 45):
+        showErrorMessage(4)
+        return None
+
     return name
 
 def getsAttributeStatusNewTupleTableFator():
-    status = input('Enter the factor status (1 for true or anything for false): ')
+    status = input('Enter the factor status (1 for \'true\' or anything for \'false\'): ')
     if (status == '1'):
         statusBool = True
     else:
@@ -57,10 +61,12 @@ def getsAttributeStatusNewTupleTableFator():
     return statusBool
 
 def getsAttributeTypeNewTupleTableFator():
-    factorType = input('Enter the factor type (required): ')
-    if (factorType == ''):
-        showErrorMessage(3)
-        return None
+    factorType = input('Enter the factor type (1 for \'Interno\' or anything for \'externo\'): ')
+    if (factorType == '1'):
+        factorType = 'Interno'
+    else:
+        factorType = 'Externo'  
+    
     return factorType
 
 def InsertTupleTableFator(DBConnection):
@@ -72,11 +78,10 @@ def InsertTupleTableFator(DBConnection):
         return
     status = getsAttributeStatusNewTupleTableFator()
     factorType = getsAttributeTypeNewTupleTableFator()
-    if (factorType == None):
-        return
     cursor = DBConnection.cursor()
     cursor.execute("INSERT INTO fator(nome, status, tipo) VALUES ('" + name + "', " + str(status) + ", '" + factorType + "')")
     DBConnection.commit()
+    showOkMessage(1)
         
 
 def showErrorMessage(msgCode):
@@ -87,9 +92,19 @@ def showErrorMessage(msgCode):
         errMsg += 'The factor name is required.\n'
     if (msgCode == 3):
         errMsg += 'The factor type is required.\n'
+    if (msgCode == 4):
+        errMsg += 'The factor name has exceeded 45 characters.\n'
 
     errMsg += '___________________________________________\n'
     print(errMsg)
+
+def showOkMessage(msgCode):
+    okMsg = '__________________ OK! __________________\n'
+    if (msgCode == 1):
+        okMsg += 'Factor inserted successfully!\n'
+    
+    okMsg += '_________________________________________\n'
+    print(okMsg)
 
 
 if __name__ == '__main__':
