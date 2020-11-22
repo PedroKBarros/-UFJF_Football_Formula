@@ -45,7 +45,7 @@ def showErrorMessage(msgCode):
     if (msgCode == 1):
         errMsg += 'Invalid option.\n'
 
-    errMsg += '___________________________________________________\n'
+    errMsg += '___________________________________________\n'
     print(errMsg)
 
 
