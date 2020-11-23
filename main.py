@@ -2,8 +2,22 @@ import pymysql #biblioteca baixada para manipulação de BDs MySQL
 import aux_functions
 import sql_functions
 
+#Menu Constants
+MAIN_MENU_NUM_OPTION1 = '1'
+MAIN_MENU_NUM_OPTION2 = '2'
+MAIN_MENU_NUM_OPTION3 = '3'
+MAIN_MENU_NUM_OPTION4 = '4'
+MAIN_MENU_STR_OPTION1 = 'Inserir Fator'
+MAIN_MENU_STR_OPTION2 = 'Inserir Peso'
+MAIN_MENU_STR_OPTION3 = 'Alterar Status de Fator'
+MAIN_MENU_STR_OPTION4 = 'Criar Simulação'
+MAIN_MENU_TITLE = 'MAIN MENU'
+
+#Other Constants
+MAIN_MENU_OPTION_REQUEST_PHRASE = 'Enter an option number: '
+
 def main():
-    DBConnection = establishConnectionDB()
+    DBConnection = sql_functions.establishConnectionDB()
     try:
         showMainMenu()
         option = returnMainMenuOption()
@@ -11,34 +25,30 @@ def main():
         
     finally: #Todo o código do bloco finally  será executado, caso tenha ocorrido uma exceção ou não
         DBConnection.close()
-    
-def establishConnectionDB():
-    conexao = pymysql.connect(db='UFJF_Modelo_Futebol', user='Pedro Barros', passwd='712Ax2+712bx+c=0')
-    return conexao
 
 def showMainMenu():
-    menu = '__________________ MENU PRINCIPAL __________________\n'
-    menu += '|1. Inserir Fator                                  |\n'
-    menu += '|2. Inserir Peso                                   |\n'
-    menu += '|3. Alterar Status de Fator                        |\n'
-    menu += '|4. Criar Simulação                                |\n'
+    menu = '_____________________ ' + MAIN_MENU_TITLE + ' ____________________\n'
+    menu += '|' + MAIN_MENU_NUM_OPTION1 + '.' + MAIN_MENU_STR_OPTION1 + '                                   |\n'
+    menu += '|' + MAIN_MENU_NUM_OPTION2 + '.' + MAIN_MENU_STR_OPTION2 + '                                    |\n'
+    menu += '|' + MAIN_MENU_NUM_OPTION3 + '.' + MAIN_MENU_STR_OPTION3 + '                         |\n'
+    menu += '|' + MAIN_MENU_NUM_OPTION4 + '.' + MAIN_MENU_STR_OPTION4 + '                                 |\n'
     menu += '___________________________________________________\n'
     print(menu)
 
 def returnMainMenuOption():
-    option = input('Enter an option number: ')
+    option = input(MAIN_MENU_OPTION_REQUEST_PHRASE)
     return option
 
 def handlesSelectedMainMenuOption(option, DBConnection):
-    if (option == '1'):
+    if (option == MAIN_MENU_NUM_OPTION1):
         sql_functions.InsertTupleTableFator(DBConnection)
         return
-    if (option == '2'):
+    if (option == MAIN_MENU_NUM_OPTION2):
         sql_functions.InsertTupleTablePeso(DBConnection)
         return
-    if (option == '3'):
+    if (option == MAIN_MENU_NUM_OPTION3):
         return
-    if (option == '4'):
+    if (option == MAIN_MENU_NUM_OPTION4):
         return
 
     aux_functions.showErrorMessage(1)

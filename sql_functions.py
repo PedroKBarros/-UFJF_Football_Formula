@@ -1,6 +1,10 @@
 import pymysql
 import aux_functions
 
+def establishConnectionDB():
+    conexao = pymysql.connect(db='UFJF_Modelo_Futebol', user='Pedro Barros', passwd='712Ax2+712bx+c=0')
+    return conexao
+
 def isAnExistingFactor(DBConnection, factorName):
     cursor = DBConnection.cursor()
     cursor.execute("SELECT NOME FROM FATOR\
