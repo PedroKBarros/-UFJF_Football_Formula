@@ -128,3 +128,58 @@ def IsThereFactor(DBConnection):
     cursor.execute("SELECT COUNT(NOME) From FATOR")
     queryResult = cursor.fetchone()
     return queryResult[0] > 0
+
+def presentsAllFactors(DBConnection):
+    option = getsOptionPresentationFactors()
+    cursor = DBConnection.cursor()
+    optionUpper = option.upper()
+
+    if (optionUpper == 'Y'):
+        cursor.execute('SELECT NOME FROM FATOR')
+        isShowOnlyName = True
+    else:
+        cursor.execute('SELECT * FROM FATOR')
+        isShowOnlyName = False
+    
+    queryResult = cursor.fetchall()
+    formattedResult = formatResultQueryTableFactor(queryResult, isShowOnlyName)
+    print("\n__________________ FACTORS __________________")
+    print(formattedResult)
+    print("_____________________________________________")
+
+
+def formatResultQueryTableFactor(queryResult, isShowOnlyName):
+    if (isShowOnlyName):
+        formattedResult = formatResultQueryTableFactorShowingName(queryResult)
+    else:
+        print("oi\n")
+        formattedResult = formatResultQueryTableFactorShowingAllAttributes(queryResult)
+    
+    return formattedResult
+
+def formatResultQueryTableFactorShowingName(queryResult):
+    formattedResult = ''
+    for result in queryResult:
+        formattedResult += ">" + result[0] + '\n'
+    
+    return formattedResult
+
+def formatResultQueryTableFactorShowingAllAttributes(queryResult):    
+    formattedResult = ''
+    status = ''
+    for result in queryResult:
+        formattedResult += ">" + result[0] + '\n'
+        status = bool(result[1])
+        if (status == True):
+            statusStr = "On"
+        else:
+            statusStr = "Off"
+        formattedResult += "    Status: " + statusStr + '\n'
+        formattedResult += "    Tipo: " + result[2] + '\n'
+
+    return formattedResult
+
+def getsOptionPresentationFactors():
+    option = input('Show factor names only (\'y\' for \'yes\' or anything to show all informations)? ')
+    return option
+        
