@@ -32,6 +32,10 @@ def showErrorMessage(msgCode):
         errMsg += 'The name of the new factor already exists.\n'
     if (msgCode == 13):
         errMsg += 'There is not at least one weight registered.\n'
+    if (msgCode == 14):
+        errMsg += 'Factor name is invalid.\n'
+    if (msgCode == 15):
+        errMsg += 'The current status is the same as the new status, so no changes have been made.\n'
 
     errMsg += '___________________________________________\n'
     print(errMsg)
@@ -42,6 +46,8 @@ def showOkMessage(msgCode):
         okMsg += 'Factor inserted successfully!\n'
     if (msgCode == 2):
         okMsg += 'Weight inserted successfully!\n'
+    if (msgCode == 3):
+        okMsg += 'Status changed successfully!\n'
     
     okMsg += '_________________________________________\n'
     print(okMsg)

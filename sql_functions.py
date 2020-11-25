@@ -180,7 +180,7 @@ def formatResultQueryTableFactorShowingAllAttributes(queryResult):
     for result in queryResult:
         formattedResult += ">" + result[0] + '\n'
         status = bool(result[1])
-        if (status == True):
+        if (status):
             statusStr = '\033[32m' + 'On' + '\033[0;0m'
         else:
             statusStr = '\033[31m' + 'Off' + '\033[0;0m'
@@ -243,3 +243,61 @@ def formatResultQueryTableWeightShowingAllAttributes(queryResult):
         formattedResult += "    valor: " + str(result[2]) + '\n'
 
     return formattedResult
+
+def changeFactorStatus(DBConnection):
+    if (not IsThereFactor(DBConnection)):
+        aux_functions.showErrorMessage(3)
+        return
+
+    nameFactor = getsFactorNameChangeStatus(DBConnection)
+    if (nameFactor == None):
+        return
+    status = bool(factorStatus(DBConnection, nameFactor))
+    if (status):
+        statusStr = '\033[32m' + 'On' + '\033[0;0m'
+    else:
+        statusStr = '\033[31m' + 'Off' + '\033[0;0m'
+
+    print('Current Status: ' + statusStr)
+    newStatus = getsNewStatusChangeStatus()
+    newStatusStr = str(newStatus)
+    print("NOVO STATUS = " + newStatusStr + "\n")
+    if (status == newStatus):
+        aux_functions.showErrorMessage(15)
+        return
+
+    cursor = DBConnection.cursor()
+    cursor.execute("UPDATE FATOR SET STATUS = " + newStatusStr + " WHERE NOME = '" + nameFactor + "'")
+    aux_functions.showOkMessage(3)
+
+
+def getsFactorNameChangeStatus(DBConnection):
+    factorName = input('Enter the name of factor: ')
+    if (factorName == '' or len(factorName) > 45):
+        aux_functions.showErrorMessage(14)
+        return None
+    if (not isAnExistingFactor(DBConnection, factorName)):
+        aux_functions.showErrorMessage(8)
+        return None
+    
+    return factorName
+
+def getsNewStatusChangeStatus():
+    newStatus = input('Enter the factor status (1 for \'true\' or anything for \'false\'): ')
+    if (newStatus == '1'):
+        statusBool = True
+    else:
+        statusBool = False
+
+    return statusBool
+
+def factorStatus(DBConnection, factorName):
+    cursor = DBConnection.cursor()
+    cursor.execute('SELECT STATUS FROM FATOR\
+                    WHERE \
+                        NOME = \'' + factorName + '\'')
+    queryResult = cursor.fetchone()
+    if (queryResult == None):
+        return -1
+    
+    return queryResult[0]

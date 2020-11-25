@@ -57,6 +57,7 @@ def handlesSelectedMainMenuOption(option, DBConnection):
         sql_functions.InsertTupleTablePeso(DBConnection)
         return
     if (option == MAIN_MENU_NUM_OPTION3):
+        sql_functions.changeFactorStatus(DBConnection)
         return
     if (option == MAIN_MENU_NUM_OPTION4):
         sql_functions.presentsAllFactors(DBConnection)
