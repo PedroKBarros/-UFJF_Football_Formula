@@ -181,9 +181,9 @@ def formatResultQueryTableFactorShowingAllAttributes(queryResult):
         formattedResult += ">" + result[0] + '\n'
         status = bool(result[1])
         if (status == True):
-            statusStr = "On"
+            statusStr = '\033[32m' + 'On' + '\033[0;0m'
         else:
-            statusStr = "Off"
+            statusStr = '\033[31m' + 'Off' + '\033[0;0m'
         formattedResult += "    Status: " + statusStr + '\n'
         formattedResult += "    Tipo: " + result[2] + '\n'
 
