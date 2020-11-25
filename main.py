@@ -17,7 +17,6 @@ MAIN_MENU_STR_OPTION4 = 'Apresentar Fatores'
 MAIN_MENU_STR_OPTION5 = 'Apresentar Pesos'
 MAIN_MENU_STR_OPTION6 = 'Criar Simulação'
 MAIN_MENU_STR_OPTION7 = 'Sair'
-
 MAIN_MENU_TITLE = 'MAIN MENU'
 
 #Other Constants
@@ -26,10 +25,12 @@ MAIN_MENU_OPTION_REQUEST_PHRASE = 'Enter an option number: '
 def main():
     DBConnection = sql_functions.establishConnectionDB()
     try:
-        showMainMenu()
-        option = returnMainMenuOption()
-        handlesSelectedMainMenuOption(option, DBConnection)
-        
+        option = ''
+        while(option != MAIN_MENU_NUM_OPTION7):
+            showMainMenu()
+            option = returnMainMenuOption()
+            handlesSelectedMainMenuOption(option, DBConnection)
+    
     finally: #Todo o código do bloco finally  será executado, caso tenha ocorrido uma exceção ou não
         DBConnection.close()
 
@@ -64,6 +65,11 @@ def handlesSelectedMainMenuOption(option, DBConnection):
         return
     if (option == MAIN_MENU_NUM_OPTION5):
         sql_functions.presentsAllWeights(DBConnection)
+        return
+    if (option == MAIN_MENU_NUM_OPTION6):
+        return
+    if (option == MAIN_MENU_NUM_OPTION7):
+        aux_functions.showOkMessage(4)
         return
 
     aux_functions.showErrorMessage(1)

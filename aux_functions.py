@@ -48,6 +48,8 @@ def showOkMessage(msgCode):
         okMsg += 'Weight inserted successfully!\n'
     if (msgCode == 3):
         okMsg += 'Status changed successfully!\n'
+    if (msgCode == 4):
+        okMsg += 'Good bye!\n'
     
     okMsg += '_________________________________________\n'
     print(okMsg)
