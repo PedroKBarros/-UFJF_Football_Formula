@@ -130,10 +130,13 @@ def IsThereFactor(DBConnection):
     return queryResult[0] > 0
 
 def presentsAllFactors(DBConnection):
+    if (not IsThereFactor(DBConnection)):
+        aux_functions.showErrorMessage(3)
+        return
+
     option = getsOptionPresentationFactors()
     cursor = DBConnection.cursor()
     optionUpper = option.upper()
-
     if (optionUpper == 'Y'):
         cursor.execute('SELECT NOME FROM FATOR')
         isShowOnlyName = True
@@ -144,6 +147,7 @@ def presentsAllFactors(DBConnection):
     queryResult = cursor.fetchall()
     formattedResult = formatResultQueryTableFactor(queryResult, isShowOnlyName)
     print("\n__________________ FACTORS __________________")
+    print('Total: ' + str(len(queryResult)) + '\n')
     print(formattedResult)
     print("_____________________________________________")
 
