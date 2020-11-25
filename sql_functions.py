@@ -1,8 +1,36 @@
 import pymysql
 import aux_functions
 
+#Data Base constants
+DB_NAME = 'UFJF_Modelo_Futebol'
+DB_USER = 'Pedro Barros'
+DB_PASSWORD = '712Ax2+712bx+c=0'
+
+#Data request phrases constants
+PHR_NAME_NEW_TUPLE_TABLE_FATOR = 'Enter the factor name (required): '
+PHR_STATUS_NEW_TUPLE_TABLE_FATOR = 'Enter the factor status (1 for \'true\' or anything for \'false\'): '
+PHR_TYPE_NEW_TUPLE_TABLE_FATOR = 'Enter the factor type (1 for \'Interno\' or anything for \'externo\'): '
+PHR_NAME_NEW_TUPLE_TABLE_PESO = 'Enter the weight name (required): '
+PHR_FACTOR_NEW_TUPLE_TABLE_PESO = 'Enter the name of the factor to which the weight will belong (required): '
+PHR_VALUE_NEW_TUPLE_TABLE_PESO = 'Enter the value of weight (required): '
+PHR_OPTION_PRESENTATION_FACTORS = 'Show factor names only (\'y\' for \'yes\' or anything to show all informations)? '
+PHR_OPTION_PRESENTATION_WEIGHTS = 'Show weight names only (\'y\' for \'yes\' or anything to show all informations)? '
+PHR_NAME_CHANGE_FACTOR_STATUS = 'Enter the name of factor: '
+PHR_STATUS_CHANGE_FACTOR_STATUS = 'Enter the factor status (1 for \'true\' or anything for \'false\'): '
+
+#constants values
+VAL_INTERNO_TYPE_FATOR = 'Interno'
+VAL_EXTERNO_TYPE_FATOR = 'Externo'
+VAL_ON_STATUS_FATOR = 'On'
+VAL_OFF_STATUS_FATOR = 'Off'
+
+#constants ANSI code colors
+ANSI_DEFAULT_FINAL_COLOR_CODE = '\033[0;0m'
+ANSI_GREEN_INITIAL_CODE = '\033[32m'
+ANSI_RED_INITIAL_CODE = '\033[31m'
+
 def establishConnectionDB():
-    conexao = pymysql.connect(db='UFJF_Modelo_Futebol', user='Pedro Barros', passwd='712Ax2+712bx+c=0')
+    conexao = pymysql.connect(db=DB_NAME, user=DB_USER, passwd=DB_PASSWORD)
     return conexao
 
 def isAnExistingFactor(DBConnection, factorName):
@@ -20,7 +48,7 @@ def isAnExistingWeight(DBConnection, weightName):
     return queryResult != None
 
 def getsAttributeNameNewTupleTableFator(DBConnection):
-    name = input('Enter the factor name (required): ')
+    name = input(PHR_NAME_NEW_TUPLE_TABLE_FATOR)
     if (name == ''):
         aux_functions.showErrorMessage(2)
         return None
@@ -34,7 +62,7 @@ def getsAttributeNameNewTupleTableFator(DBConnection):
     return name.upper()
 
 def getsAttributeStatusNewTupleTableFator():
-    status = input('Enter the factor status (1 for \'true\' or anything for \'false\'): ')
+    status = input(PHR_STATUS_NEW_TUPLE_TABLE_FATOR)
     if (status == '1'):
         statusBool = True
     else:
@@ -43,11 +71,11 @@ def getsAttributeStatusNewTupleTableFator():
     return statusBool
 
 def getsAttributeTypeNewTupleTableFator():
-    factorType = input('Enter the factor type (1 for \'Interno\' or anything for \'externo\'): ')
+    factorType = input(PHR_TYPE_NEW_TUPLE_TABLE_FATOR)
     if (factorType == '1'):
-        factorType = 'Interno'
+        factorType = VAL_INTERNO_TYPE_FATOR
     else:
-        factorType = 'Externo'  
+        factorType = VAL_EXTERNO_TYPE_FATOR 
     
     return factorType.upper()
 
@@ -89,7 +117,7 @@ def InsertTupleTablePeso(DBConnection):
     aux_functions.showOkMessage(2)
 
 def getsAttributeNameNewTupleTablePeso(DBConnection):
-    name = input('Enter the weight name (required): ')
+    name = input(PHR_NAME_NEW_TUPLE_TABLE_PESO)
     if (name == ''):
         aux_functions.showErrorMessage(5)
         return None
@@ -104,7 +132,7 @@ def getsAttributeNameNewTupleTablePeso(DBConnection):
     return name.upper()
 
 def getsAttributeFactorNameNewTupleTablePeso(DBConnection):
-    factorName = input('Enter the name of the factor to which the weight will belong (required): ')
+    factorName = input(PHR_FACTOR_NEW_TUPLE_TABLE_PESO)
     if (factorName == '' or len(factorName) > 45):
         aux_functions.showErrorMessage(7)
         return None
@@ -115,7 +143,7 @@ def getsAttributeFactorNameNewTupleTablePeso(DBConnection):
     return factorName.upper()      
 
 def getsAttributeValueNewTupleTablePeso():
-    strValue = input('Enter the value of weight (required): ')
+    strValue = input(PHR_VALUE_NEW_TUPLE_TABLE_PESO)
     floatValue = float(strValue)
     if (not aux_functions.isNumberInRange(floatValue, 0.00, 1.00)):
         aux_functions.showErrorMessage(9)
@@ -181,16 +209,16 @@ def formatResultQueryTableFactorShowingAllAttributes(queryResult):
         formattedResult += ">" + result[0] + '\n'
         status = bool(result[1])
         if (status):
-            statusStr = '\033[32m' + 'On' + '\033[0;0m'
+            statusStr = ANSI_GREEN_INITIAL_CODE + VAL_ON_STATUS_FATOR + ANSI_DEFAULT_FINAL_COLOR_CODE
         else:
-            statusStr = '\033[31m' + 'Off' + '\033[0;0m'
+            statusStr = ANSI_RED_INITIAL_CODE + VAL_OFF_STATUS_FATOR + ANSI_DEFAULT_FINAL_COLOR_CODE
         formattedResult += "    Status: " + statusStr + '\n'
         formattedResult += "    Tipo: " + result[2] + '\n'
 
     return formattedResult
 
 def getsOptionPresentationFactors():
-    option = input('Show factor names only (\'y\' for \'yes\' or anything to show all informations)? ')
+    option = input(PHR_OPTION_PRESENTATION_FACTORS)
     return option
         
 def presentsAllWeights(DBConnection):
@@ -216,7 +244,7 @@ def presentsAllWeights(DBConnection):
     print("_____________________________________________")
 
 def getsOptionPresentationWeights():
-    option = input('Show weight names only (\'y\' for \'yes\' or anything to show all informations)? ')
+    option = input(PHR_OPTION_PRESENTATION_WEIGHTS)
     return option
     
 def formatResultQueryTableWeight(queryResult, isShowOnlyName):
@@ -254,9 +282,9 @@ def changeFactorStatus(DBConnection):
         return
     status = bool(factorStatus(DBConnection, nameFactor))
     if (status):
-        statusStr = '\033[32m' + 'On' + '\033[0;0m'
+        statusStr = ANSI_GREEN_INITIAL_CODE + VAL_ON_STATUS_FATOR + ANSI_DEFAULT_FINAL_COLOR_CODE
     else:
-        statusStr = '\033[31m' + 'Off' + '\033[0;0m'
+        statusStr = ANSI_RED_INITIAL_CODE + VAL_OFF_STATUS_FATOR + ANSI_DEFAULT_FINAL_COLOR_CODE
 
     print('Current Status: ' + statusStr)
     newStatus = getsNewStatusChangeStatus()
@@ -273,7 +301,7 @@ def changeFactorStatus(DBConnection):
 
 
 def getsFactorNameChangeStatus(DBConnection):
-    factorName = input('Enter the name of factor: ')
+    factorName = input(PHR_NAME_CHANGE_FACTOR_STATUS)
     if (factorName == '' or len(factorName) > 45):
         aux_functions.showErrorMessage(14)
         return None
@@ -284,7 +312,7 @@ def getsFactorNameChangeStatus(DBConnection):
     return factorName
 
 def getsNewStatusChangeStatus():
-    newStatus = input('Enter the factor status (1 for \'true\' or anything for \'false\'): ')
+    newStatus = input(PHR_STATUS_CHANGE_FACTOR_STATUS)
     if (newStatus == '1'):
         statusBool = True
     else:
