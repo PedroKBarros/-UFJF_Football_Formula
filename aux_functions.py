@@ -30,6 +30,8 @@ def showErrorMessage(msgCode):
         errMsg += 'The name of the new weight already exists.\n'
     if (msgCode == 12):
         errMsg += 'The name of the new factor already exists.\n'
+    if (msgCode == 13):
+        errMsg += 'There is not at least one weight registered.\n'
 
     errMsg += '___________________________________________\n'
     print(errMsg)

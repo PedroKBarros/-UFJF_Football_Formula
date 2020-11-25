@@ -129,6 +129,12 @@ def IsThereFactor(DBConnection):
     queryResult = cursor.fetchone()
     return queryResult[0] > 0
 
+def IsThereWeight(DBConnection):
+    cursor = DBConnection.cursor()
+    cursor.execute("SELECT COUNT(NOME) From PESO")
+    queryResult = cursor.fetchone()
+    return queryResult[0] > 0
+
 def presentsAllFactors(DBConnection):
     if (not IsThereFactor(DBConnection)):
         aux_functions.showErrorMessage(3)
@@ -187,3 +193,53 @@ def getsOptionPresentationFactors():
     option = input('Show factor names only (\'y\' for \'yes\' or anything to show all informations)? ')
     return option
         
+def presentsAllWeights(DBConnection):
+    if (not IsThereWeight(DBConnection)):
+        aux_functions.showErrorMessage(13)
+        return
+
+    option = getsOptionPresentationWeights()
+    cursor = DBConnection.cursor()
+    optionUpper = option.upper()
+    if (optionUpper == 'Y'):
+        cursor.execute('SELECT NOME FROM PESO')
+        isShowOnlyName = True
+    else:
+        cursor.execute('SELECT * FROM PESO')
+        isShowOnlyName = False
+    
+    queryResult = cursor.fetchall()
+    formattedResult = formatResultQueryTableWeight(queryResult, isShowOnlyName)
+    print("\n__________________ WEIGHTS __________________")
+    print('Total: ' + str(len(queryResult)) + '\n')
+    print(formattedResult)
+    print("_____________________________________________")
+
+def getsOptionPresentationWeights():
+    option = input('Show weight names only (\'y\' for \'yes\' or anything to show all informations)? ')
+    return option
+    
+def formatResultQueryTableWeight(queryResult, isShowOnlyName):
+    if (isShowOnlyName):
+        formattedResult = formatResultQueryTableWeightShowingName(queryResult)
+    else:
+        formattedResult = formatResultQueryTableWeightShowingAllAttributes(queryResult)
+    
+    return formattedResult
+    
+def formatResultQueryTableWeightShowingName(queryResult):
+    formattedResult = ''
+    for result in queryResult:
+        formattedResult += ">" + result[0] + '\n'
+    
+    return formattedResult
+
+def formatResultQueryTableWeightShowingAllAttributes(queryResult):    
+    formattedResult = ''
+    for result in queryResult:
+        formattedResult += ">" + result[0] + '\n'
+        formattedResult += "    nome: " + result[0] + '\n'
+        formattedResult += "    nome do fator: " + result[1] + '\n'
+        formattedResult += "    valor: " + str(result[2]) + '\n'
+
+    return formattedResult

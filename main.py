@@ -61,6 +61,9 @@ def handlesSelectedMainMenuOption(option, DBConnection):
     if (option == MAIN_MENU_NUM_OPTION4):
         sql_functions.presentsAllFactors(DBConnection)
         return
+    if (option == MAIN_MENU_NUM_OPTION5):
+        sql_functions.presentsAllWeights(DBConnection)
+        return
 
     aux_functions.showErrorMessage(1)
 
