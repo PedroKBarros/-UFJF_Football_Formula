@@ -268,6 +268,7 @@ def changeFactorStatus(DBConnection):
 
     cursor = DBConnection.cursor()
     cursor.execute("UPDATE FATOR SET STATUS = " + newStatusStr + " WHERE NOME = '" + nameFactor + "'")
+    DBConnection.commit()
     aux_functions.showOkMessage(3)
 
 
