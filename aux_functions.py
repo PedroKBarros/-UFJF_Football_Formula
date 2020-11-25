@@ -1,5 +1,3 @@
-import pymysql
-
 def isNumberInRange(number, min, max):
     if (min > max):
         return False

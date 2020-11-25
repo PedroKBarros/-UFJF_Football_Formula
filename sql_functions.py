@@ -190,7 +190,6 @@ def formatResultQueryTableFactor(queryResult, isShowOnlyName):
     if (isShowOnlyName):
         formattedResult = formatResultQueryTableFactorShowingName(queryResult)
     else:
-        print("oi\n")
         formattedResult = formatResultQueryTableFactorShowingAllAttributes(queryResult)
     
     return formattedResult
@@ -289,7 +288,6 @@ def changeFactorStatus(DBConnection):
     print('Current Status: ' + statusStr)
     newStatus = getsNewStatusChangeStatus()
     newStatusStr = str(newStatus)
-    print("NOVO STATUS = " + newStatusStr + "\n")
     if (status == newStatus):
         aux_functions.showErrorMessage(15)
         return
