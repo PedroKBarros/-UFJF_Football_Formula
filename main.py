@@ -10,13 +10,15 @@ MAIN_MENU_NUM_OPTION4 = '4'
 MAIN_MENU_NUM_OPTION5 = '5'
 MAIN_MENU_NUM_OPTION6 = '6'
 MAIN_MENU_NUM_OPTION7 = '7'
+MAIN_MENU_NUM_OPTION8 = '8'
 MAIN_MENU_STR_OPTION1 = 'Inserir Fator'
 MAIN_MENU_STR_OPTION2 = 'Inserir Peso'
-MAIN_MENU_STR_OPTION3 = 'Alterar Status de Fator'
-MAIN_MENU_STR_OPTION4 = 'Apresentar Fatores'
-MAIN_MENU_STR_OPTION5 = 'Apresentar Pesos'
-MAIN_MENU_STR_OPTION6 = 'Criar Simulação'
-MAIN_MENU_STR_OPTION7 = 'Sair'
+MAIN_MENU_STR_OPTION3 = 'Inserir Time'
+MAIN_MENU_STR_OPTION4 = 'Alterar Status de Fator'
+MAIN_MENU_STR_OPTION5 = 'Apresentar Fatores'
+MAIN_MENU_STR_OPTION6 = 'Apresentar Pesos'
+MAIN_MENU_STR_OPTION7 = 'Criar Simulação'
+MAIN_MENU_STR_OPTION8 = 'Sair'
 MAIN_MENU_TITLE = 'MAIN MENU'
 
 #Other Constants
@@ -26,7 +28,7 @@ def main():
     DBConnection = sql_functions.establishConnectionDB()
     try:
         option = ''
-        while(option != MAIN_MENU_NUM_OPTION7):
+        while(option != MAIN_MENU_NUM_OPTION8):
             showMainMenu()
             option = returnMainMenuOption()
             handlesSelectedMainMenuOption(option, DBConnection)
@@ -42,7 +44,8 @@ def showMainMenu():
     menu += ' ' + MAIN_MENU_NUM_OPTION4 + '.' + MAIN_MENU_STR_OPTION4 + '\n'
     menu += ' ' + MAIN_MENU_NUM_OPTION5 + '.' + MAIN_MENU_STR_OPTION5 + '\n'
     menu += ' ' + MAIN_MENU_NUM_OPTION6 + '.' + MAIN_MENU_STR_OPTION6 + '\n'
-    menu += ' ' + MAIN_MENU_NUM_OPTION7 + '.' + MAIN_MENU_STR_OPTION7 + '\n'             
+    menu += ' ' + MAIN_MENU_NUM_OPTION7 + '.' + MAIN_MENU_STR_OPTION7 + '\n'           
+    menu += ' ' + MAIN_MENU_NUM_OPTION8 + '.' + MAIN_MENU_STR_OPTION8 + '\n'   
     menu += '___________________________________________________\n'
     print(menu)
 
@@ -57,18 +60,18 @@ def handlesSelectedMainMenuOption(option, DBConnection):
     if (option == MAIN_MENU_NUM_OPTION2):
         sql_functions.InsertTupleTablePeso(DBConnection)
         return
-    if (option == MAIN_MENU_NUM_OPTION3):
+    if (option == MAIN_MENU_NUM_OPTION4):
         sql_functions.changeFactorStatus(DBConnection)
         return
-    if (option == MAIN_MENU_NUM_OPTION4):
+    if (option == MAIN_MENU_NUM_OPTION5):
         sql_functions.presentsAllFactors(DBConnection)
         return
-    if (option == MAIN_MENU_NUM_OPTION5):
+    if (option == MAIN_MENU_NUM_OPTION6):
         sql_functions.presentsAllWeights(DBConnection)
         return
-    if (option == MAIN_MENU_NUM_OPTION6):
-        return
     if (option == MAIN_MENU_NUM_OPTION7):
+        return
+    if (option == MAIN_MENU_NUM_OPTION8):
         aux_functions.showOkMessage(4)
         return
 
