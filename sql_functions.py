@@ -26,10 +26,11 @@ PHR_OPTION_PRESENTATION_FACTORS = 'Show factor names only (\'' + VAL_Y_AS_YES + 
 PHR_OPTION_PRESENTATION_WEIGHTS = 'Show weight names only (\'' + VAL_Y_AS_YES + '\' for \'yes\' or anything to show all informations)? '
 PHR_NAME_CHANGE_FACTOR_STATUS = 'Enter the name of factor: '
 PHR_STATUS_CHANGE_FACTOR_STATUS = 'Enter the factor status (' + VAL_1_AS_TRUE + ' for \'true\' or anything for \'false\'): '
+PHR_NAME_NEW_TUPLE_TABLE_TIME = 'Enter the team name (required): '
 
 #Constant output data phrases
 PHROUT_HEADER_PRESENT_ALL_FACTORS = '\n__________________ FACTORS __________________'
-PHROUT_TOTAL_PRESENT_ALL_FACTORS_WEIGHTS = 'Total: '
+PHROUT_TOTAL_PRESENT_ALL_TABLES = 'Total: '
 PHROUT_FOOTER_PRESENT_ALL_FACTORS = "_____________________________________________"
 PHROUT_STATUS_FORMAT_SHOWING_ALL_ATTRIBUTES_PRESENT_ALL_FACTORS = "    Status: "
 PHROUT_TIPO_FORMAT_SHOWING_ALL_ATTRIBUTES_PRESENT_ALL_FACTORS = "    Tipo: "
@@ -39,6 +40,8 @@ PHROUT_FOOTER_PRESENT_ALL_WEIGHTS = "___________________________________________
 PHROUT_FACTOR_NAME_FORMAT_SHOWING_ALL_ATTRIBUTES_PRESENT_ALL_WEIGHTS = "    Factor Name: "
 PHROUT_VALUE_FORMAT_SHOWING_ALL_ATTRIBUTES_PRESENT_ALL_WEIGHTS = "    Value: "
 PHROUT_CURRENT_VALUE_CHANGE_FACTOR_STATUS = 'Current Status: '
+PHROUT_HEADER_PRESENT_ALL_TEAMS = '__________________ TEAMS __________________'
+PHROUT_FOOTER_PRESENT_ALL_TEAMS = "_____________________________________________"
 
 #constants ANSI code colors
 ANSI_DEFAULT_FINAL_COLOR_CODE = '\033[0;0m'
@@ -197,7 +200,7 @@ def presentsAllFactors(DBConnection):
     queryResult = cursor.fetchall()
     formattedResult = formatResultQueryTableFactor(queryResult, isShowOnlyName)
     print('\n' + PHROUT_HEADER_PRESENT_ALL_FACTORS)
-    print(PHROUT_TOTAL_PRESENT_ALL_FACTORS_WEIGHTS + str(len(queryResult)) + '\n')
+    print(PHROUT_TOTAL_PRESENT_ALL_TABLES + str(len(queryResult)) + '\n')
     print(formattedResult)
     print(PHROUT_FOOTER_PRESENT_ALL_FACTORS)
 
@@ -254,7 +257,7 @@ def presentsAllWeights(DBConnection):
     queryResult = cursor.fetchall()
     formattedResult = formatResultQueryTableWeight(queryResult, isShowOnlyName)
     print('\n' + PHROUT_HEADER_PRESENT_ALL_WEIGHTS)
-    print(PHROUT_TOTAL_PRESENT_ALL_FACTORS_WEIGHTS + str(len(queryResult)) + '\n')
+    print(PHROUT_TOTAL_PRESENT_ALL_TABLES + str(len(queryResult)) + '\n')
     print(formattedResult)
     print(PHROUT_FOOTER_PRESENT_ALL_WEIGHTS)
 
@@ -343,3 +346,63 @@ def factorStatus(DBConnection, factorName):
         return -1
     
     return queryResult[0]
+
+def isAnExistingTeam(DBConnection, teamName):
+    cursor = DBConnection.cursor()
+    cursor.execute("SELECT NOME FROM TIME\
+                    WHERE NOME = '" + teamName + "'")
+    queryResult = cursor.fetchone()
+    return queryResult != None
+
+def getsAttributeNameNewTupleTableTime(DBConnection):
+    name = input(PHR_NAME_NEW_TUPLE_TABLE_TIME)
+    if (name == ''):
+        aux_functions.showErrorMessage(16)
+        return None
+    if (len(name) > 100):
+        aux_functions.showErrorMessage(17)
+        return None
+    if (isAnExistingTeam(DBConnection, name)):
+        aux_functions.showErrorMessage(18)
+        return None
+
+    return name.upper()
+
+def InsertTupleTableTime(DBConnection):
+    name = ''
+    name = getsAttributeNameNewTupleTableTime(DBConnection)
+    if (name == None):
+        return
+
+    cursor = DBConnection.cursor()
+    cursor.execute("INSERT INTO time(nome) VALUES ('" + name + "')")
+    DBConnection.commit()
+    aux_functions.showOkMessage(5)
+
+
+def IsThereTeam(DBConnection):
+    cursor = DBConnection.cursor()
+    cursor.execute("SELECT COUNT(NOME) From TIME")
+    queryResult = cursor.fetchone()
+    return queryResult[0] > 0
+
+def presentsAllTeams(DBConnection):
+    if (not IsThereTeam(DBConnection)):
+        aux_functions.showErrorMessage(19)
+        return
+
+    cursor = DBConnection.cursor()
+    cursor.execute('SELECT * FROM TIME')    
+    queryResult = cursor.fetchall()
+    formattedResult = formatResultQueryTableTeam(queryResult)
+    print('\n' + PHROUT_HEADER_PRESENT_ALL_TEAMS)
+    print(PHROUT_TOTAL_PRESENT_ALL_TABLES + str(len(queryResult)) + '\n')
+    print(formattedResult)
+    print(PHROUT_FOOTER_PRESENT_ALL_TEAMS)
+
+def formatResultQueryTableTeam(queryResult):
+    formattedResult = ''
+    for result in queryResult:
+        formattedResult += PHROUT_ITEM_CHARACTER + result[0] + '\n'
+
+    return formattedResult

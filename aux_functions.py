@@ -34,6 +34,15 @@ def showErrorMessage(msgCode):
         errMsg += 'Factor name is invalid.\n'
     if (msgCode == 15):
         errMsg += 'The current status is the same as the new status, so no changes have been made.\n'
+    if (msgCode == 16):
+        errMsg += 'The team name is required.\n'
+    if (msgCode == 17):
+        errMsg += 'The team name has exceeded 100 characters.\n'
+    if (msgCode == 18):
+        errMsg += 'The name of the new team already exists.\n'
+    if (msgCode == 19):
+        errMsg += 'There is not at least one team registered.\n'
+    
 
     errMsg += '___________________________________________\n'
     print(errMsg)
@@ -48,6 +57,8 @@ def showOkMessage(msgCode):
         okMsg += 'Status changed successfully!\n'
     if (msgCode == 4):
         okMsg += 'Good bye!\n'
+    if (msgCode == 5):
+        okMsg += 'Team inserted successfully!\n'
     
     okMsg += '_________________________________________\n'
     print(okMsg)
